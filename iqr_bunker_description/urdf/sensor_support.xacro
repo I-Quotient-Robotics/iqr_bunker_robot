@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="sensor_support">
+
+  <xacro:macro name="sensor_support" params="package parent *origin">
+    <xacro:property name="prefix" value="sensor_support"/>
+
+    <link name="${prefix}_link">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <mesh filename="package://${package}/urdf/mesh/sensor_support.stl"/>
+        </geometry>
+        <material name="">
+          <color rgba="0.2 0.2 0.2 1"/>
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <mesh filename="package://${package}/urdf/mesh/sensor_support_collision.stl"/>
+        </geometry>
+      </collision>
+    </link>
+    <joint name="${prefix}_link_joint" type="fixed">
+      <xacro:insert_block name="origin"/>
+      <parent link="${parent}"/>
+      <child link="${prefix}_link"/>
+    </joint>
+
+    <link name="lidar_mount"/>
+    <joint name="lidar_mount_joint" type="fixed">
+      <origin xyz="0.00980552 0 0.354" rpy="0 0 0"/>
+      <parent link="${prefix}_link"/>
+      <child link="lidar_mount"/>
+    </joint>
+
+    <link name="d435_mount"/>
+    <joint name="d345_mount_joint" type="fixed">
+      <origin xyz="0.07195552 0 0.3195" rpy="0 0 0"/>
+      <parent link="${prefix}_link"/>
+      <child link="d435_mount"/>
+    </joint>
+
+    <link name="pan_tilt_mount"/>
+    <joint name="pan_tilt_mount_joint" type="fixed">
+      <origin xyz="0.00980552 0 0.438" rpy="0 0 0"/>
+      <parent link="${prefix}_link"/>
+      <child link="pan_tilt_mount"/>
+    </joint>
+
+    <link name="main_gps_antenna">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <mesh filename="package://${package_name}/urdf/mesh/gps_antenna.stl"/>
+        </geometry>
+        <material name="">
+          <color rgba="1.0 1.0 0.9 1"/>
+        </material>
+      </visual>
+    </link>
+    <joint name="main_gps_antenna_joint" type="fixed">
+      <origin xyz="-0.16319448 0 0.2815" rpy="0 0 0"/>
+      <parent link="sensor_support_link"/>
+      <child link="main_gps_antenna"/>
+    </joint>
+
+    <!-- imu antenna -->
+    <link name="imu_link"/>
+    <joint name="imu_link_joint" type="fixed">
+      <origin xyz="-0.014 0.090135 0.0358448" rpy="0 0 0"/>
+      <parent link="sensor_support_link"/>
+      <child link="imu_link"/>
+    </joint>
+
+  </xacro:macro>
+
+</robot>

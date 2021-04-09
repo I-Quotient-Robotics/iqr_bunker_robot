@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="iqr_bunker_robot">
+
+  <xacro:property name="package_name" value="iqr_bunker_description"/>
+
+  <!-- Include bunker ROBOT -->
+  <include filename="$(find bunker_description)/urdf/bunker.xacro"/>
+
+  <!-- Include accessories -->
+  <xacro:include filename="$(find ${package_name})/urdf/vlp16.xacro"/>
+  <xacro:include filename="$(find ${package_name})/urdf/gps_antenna.xacro"/>
+  <xacro:include filename="$(find ${package_name})/urdf/sensor_support.xacro"/>
+  <xacro:include filename="$(find pan_tilt_description)/urdf/pan_tilt.urdf.xacro"/>
+  <xacro:include filename="$(find pan_tilt_description)/urdf/kinect_v2.urdf.xacro"/>
+  <xacro:include filename="$(find realsense2_description)/urdf/_d435i.urdf.xacro"/>
+
+  <!-- IQR sensor support -->
+  <xacro:sensor_support package="${package_name}" parent="mid_mount">
+    <origin xyz="-0.18005552 0 0" rpy="0 0 0"/>
+  </xacro:sensor_support>
+
+  <!-- VLP-16 lidar -->
+  <xacro:vlp16 package="${package_name}" parent="lidar_mount">
+    <origin xyz="0.0 0.0 0.0" rpy="0 0 -0.52359877"/>
+  </xacro:vlp16>
+
+  <!-- iqr pan_tilt -->
+  <!-- <xacro:pan_tilt parent="pan_tilt_mount">
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </xacro:pan_tilt> -->
+
+  <!-- kinect_v2 -->
+  <!-- <xacro:kinect_v2 parent="pan_tilt_kinect_surface">
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </xacro:kinect_v2> -->
+
+  <!-- realsense d435i -->
+  <xacro:sensor_d435i parent="d435_mount">
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </xacro:sensor_d435i>
+
+  <!-- main gps antenna -->
+  <link name="gps_link"/>
+  <joint name="gps_link_joint" type="fixed">
+    <origin xyz="0 0 0.107" rpy="0 0 0"/>
+    <parent link="main_gps_antenna"/>
+    <child link="gps_link"/>
+  </joint>
+
+  <!-- second gps antenna -->
+  <xacro:gps_antenna package="${package_name}" name="second" parent="mid_mount">
+    <origin xyz="0.32 0 0" rpy="0 0 0"/>
+  </xacro:gps_antenna>
+
+</robot>
